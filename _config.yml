@@ -1,3 +1,4 @@
 name: Abbass MAROUNI
 markdown: redcarpet
 pygments: true
+permalink: /blog/:title
