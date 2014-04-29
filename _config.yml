@@ -2,3 +2,8 @@ name: Abbass MAROUNI
 markdown: redcarpet
 pygments: true
 permalink: /blog/:title
+
+analytics :
+  provider : google
+  google : 
+      tracking_id : 'UA-50476639-1'
