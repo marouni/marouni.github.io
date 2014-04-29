@@ -158,12 +158,12 @@ id  _bucketname                     _offsets
 Time taken: 4.811 seconds, Fetched: 10 row(s)
 ```
 
-As we can see from the response of the SELECT query on our index table, for each value in our _id_ column (of tab1) Hive generated the corresponding _bucketname_ (_input_ _file_) and the offset of the _id_ in the _bucketname_ (_input_ _file_).
+As we can see from the response of the SELECT query on our index table, for each value in our _id_ column (of tab1) Hive generated the corresponding _bucketname_ (_input_ _file_) and the offset of the _id_ in the _bucketname_ (_input_ _file_). Hive uses the above table to deduce the block(s) where the _id_ value appears. For example the _id_ value of 3 is in the first block because its _offset_ (14) is less than the blocksize (1048576), so querying the table _tab1_ for _id_ = 3 using the index will cause Hive to scan the first block only.
 
 We're done setting up our index, so let's see how we can use!
 
 ## Querying an indexed table
-If you're coming from a relational database background you will probably be disappointed by the way we use indexes in Hive. But remember that Hive is a fairly recent product and specially the indexing in Hive which is still in development.  
+If you're coming from a relational database background you will probably be disappointed by the way we use indexes in Hive. But remember that Hive is a fairly recent product and specially indexing in Hive which is still in development.  
 
 Contrary to indexes in a RDBMS, we need to explicitly tell Hive to generate an index file on a given column :
  
