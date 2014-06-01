@@ -1,7 +1,7 @@
 ---
 layout: post
-title:  "Clean data sets with Pig"
-date:   2014-04-27 12:14:20
+title:  "Clean data sets with Apache Pig"
+date:   2014-06-01 12:14:20
 categories: jekyll update
 ---
 
