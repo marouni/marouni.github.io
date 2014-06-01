@@ -8,15 +8,15 @@ categories: jekyll update
 # Apache Hive Indexes
 
 [Apache Hive](http://hive.apache.org/) provides a data warehousing layer on top of Hadoop. Hive uses Hadoop's MapReduce as its query engine to execute complex SQL-like queries over data in Hadoop's file system (HDFS).
-Hive was developed at Facebook to deal with the ever increasing volumes of data in their data warehouses. It's still in use at Facebook as the recently published [blog post](https://code.facebook.com/posts/229861827208629/scaling-the-facebook-data-warehouse-to-300-pb/) speaks of numerous innovations in Hive's ecosystem to scale to 600TB of daily data rate.       
+Hive was developed at Facebook to deal with the ever increasing volume of data in their data warehouses. It's still in use at Facebook as the recently published [blog post](https://code.facebook.com/posts/229861827208629/scaling-the-facebook-data-warehouse-to-300-pb/) speaks of numerous innovations in Hive's ecosystem to scale to 600TB of daily data rate.       
 
 Hive's query language HiveQL supports a large subset of the ANSI-SQL standard, both in the [Data Definition Language](https://cwiki.apache.org/confluence/display/Hive/LanguageManual+DDL) and the [Data Manipulation Language](https://cwiki.apache.org/confluence/display/Hive/LanguageManual+DML). Among the DDL supported features is the ability to create indexes on tables using the standard SQL _'CREATE INDEX ...'_ statement.  
-Before diving into the details of Hive indexes it's worth mentioning what happens under the covers when we execute a Hive query. In fact Hive is just an abstraction layer on top of MapReduce to support SQL queries on HDFS files. We create Hive tables with schemas that map directly to files in HDFS, then we execute SQL queries on these tables (files). SQL queries are processed by Hive's query engine and a series of MapReduce jobs is executed on the tables (files) and output is stored in new tables (files).  
-The fact that Hive relies on MapReduce jobs to execute queries means that a query is divided into a series of Map and Reduce tasks. Map tasks will read data from tables (files) and do some processing if necessary then output from these tasks is shuffled to the reduce tasks (if necessary also) that process it and write back to HDFS. As I mentioned earlier Hive tables are just schemas over HDFS files, these files are managed by HDFS that will divide them into blocks. Blocks in HDFS are the standard working units for MapReduce jobs, so a single mapper will process a single block (from a list of blocks that make up a file/table) and the more blocks we have the more mappers we need to process them.  
-One way to reduce processing time is to process less blocks for a give file/table, here's where Hive Indexes come into play. Hive will index a column in a table by creating a second table with mappings between column values and HDFS blocks, so to execute a query on the indexed column of the table we process fewer blocks thanks to the index that told our mappers which blocks have the column value we're interested in. The details and benefits of Hive indexes will become clearer in the next sections. Indexes in Hive are supported as of version 0.7, any recent Hadoop distribution (HortonWorks, Cloudera, ...) or Hadoop Vanilla will have a recent version of Hive.
+Before diving into the details of Hive indexes it's worth mentioning what happens under the covers when we execute a Hive query. In fact Hive is just an abstraction layer on top of MapReduce to support SQL queries on HDFS files. We create Hive tables with schemas that map directly to files in HDFS, then we execute SQL queries on these tables (files). SQL queries are processed by Hive's query engine and a series of MapReduce jobs are executed on the tables (files) and output is stored in new tables (files) or dumped to the screen.  
+The fact that Hive relies on MapReduce jobs to execute queries means that a query is divided into a series of Map and Reduce tasks. Map tasks will read data from tables (files) and do some processing if necessary then output from these tasks is shuffled to the reduce tasks (if necessary also) that process it and write back to HDFS. As I mentioned earlier Hive tables are just schemas over HDFS files, these files are managed by HDFS that will divide them into blocks. Blocks in HDFS are the standard working units for MapReduce jobs, so a single mapper will, by defualt, process a single block (from a list of blocks that make up a file/table) and the more blocks we have the more mappers we need to process them.  
+One way to reduce processing time is to process less blocks for a given file/table, here's where Hive Indexes come into play. Hive will index a column in a table by creating a second table with mappings between column values and HDFS blocks, so to execute a query on the indexed column of the table we process fewer blocks thanks to the index that told our mappers which blocks have the column value we're interested in. The details and benefits of Hive indexes will become clearer in the next sections. Indexes in Hive are supported as of version 0.7, any recent Hadoop distribution (HortonWorks, Cloudera, ...) has a recent version of Hive that supports indexes.
 
 ## HDFS setup
-For the demostration we'll use a file with 2 integer fields (sequence from 1 to 1000000, random integer between 1 and 32000) with 1000000 entries. Here's a sample of this file :
+For this demostration we'll use a file with 2 integer fields (a sequence from 1 to 1000000, random integer between 1 and 32000) with 1000000 entries. Here's a sample of this file :
 
 ```bash
 [root@sandbox]$ head input 
@@ -48,7 +48,7 @@ Total blocks (validated):	12 (avg. block size 979415 B)
 ```
 
 ## Hive setup
-The input file is now in HDFS and divided into 12 blocks, next we'll create a Hive table with a schema that maps my input file. In the Hive shell  :
+The input file is now in HDFS and divided into 12 blocks, next we'll create a Hive table with a schema with 2 columns that map to our input file. In the Hive shell  :
 
 ```sql
 hive> CREATE TABLE tab1 (id INT, pass INT) ROW FORMAT DELIMITED FIELDS TERMINATED BY ' ';
@@ -77,11 +77,11 @@ OK
 9	8687
 10	4095
 ```
-Simple 'SELECT * FROM' queries do not need any MapReduce processing, so we get instantaneous response.
+Simple 'SELECT * FROM' queries do not need any MapReduce processing, so we get an instantaneous response.
 
 ## un-indexed table query
 
-For the first test, we'll run a simple query on the un-indexed table so that we can later compare to a query on an indexed table.
+For the first test, we'll run a simple query on the un-indexed table so that we can later compare it to a query on an indexed table.
 
 ```sql
 hive> SELECT * FROM tab1 WHERE id=45;
@@ -98,7 +98,7 @@ OK
 45	179
 ```
 
-Examining the job logs (on the job history server) reveals some details about the executed job. Namely the blocks read the Map-only job :
+Examining the job logs (on the job history server) reveal some details about the executed job. Namely the blocks read by the Map-only job :
 
 ```bash
 2014-04-27 03:37:13,457 INFO [main] org.apache.hadoop.mapred.MapTask: Processing split: Paths:
@@ -116,7 +116,7 @@ Examining the job logs (on the job history server) reveals some details about th
 /apps/hive/warehouse/tab1/input:11534336+218655
 InputFormatClass: org.apache.hadoop.mapred.TextInputFormat 
 ```
-The log shows that all of the 12 blocks were read by the Map-only job. Notice the _1048576_ which was our block size.
+The logs show that all of the 12 blocks were read by the Map-only job. Notice the _1048576_ which was our block size.
 
 ## Index setup
 
@@ -163,7 +163,7 @@ As we can see from the response of the SELECT query on our index table, for each
 We're done setting up our index, so let's see how we can use!
 
 ## Querying an indexed table
-If you're coming from a relational database background you will probably be disappointed by the way we use indexes in Hive. But remember that Hive is a fairly recent product and specially indexing in Hive which is still in development.  
+If you're coming from a relational database background you will probably be disappointed by the way we use indexes in Hive. But remember that Hive is a fairly recent and specially indexing which is still under development.  
 
 Contrary to indexes in a RDBMS, we need to explicitly tell Hive to generate an index file on a given column :
  
