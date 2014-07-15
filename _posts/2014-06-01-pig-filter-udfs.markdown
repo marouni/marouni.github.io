@@ -1,15 +1,14 @@
----
+
 layout: post
 title:  "Extending Apache Pig to clean Big Data sets"
 date:   2014-06-01 12:14:20
 categories: jekyll update
 ---
-
 # Cleaning data with Apache Pig
 
-[Apache Pig](http://pig.apache.org/) provides a simple to use abstraction layer on top of Hadoop MapReduce. Pig allows us to define complex data flows using its scripting language Pig-Latin. Pig-Latin is a procedural scripting language with a gradual learning curve and a lot of built-in functions and a fairly large open source community. A data flow, written in Pig-Latin, hides all of the low level complexities of MapReduce so that we can focus on data and avoid writing low level Java code. Developing complex data flows with Pig-Latin is easy using the built-in functions, but sometimes we need to implement our own functions that are specific to our data or that apply a specific business logic to the data. For these reasons Pig-Latin provides User Defined Functions (UDFs) that can be written in Java or Python and easily integrated with Pig-Latin. The Pig community has a public repository called [PiggyBank](https://github.com/apache/pig/tree/branch-0.12/contrib/piggybank) where you can find user contributed functions, you should always check this repository before writing your own UDF.
+[Apache Pig](http://pig.apache.org/) provides a simple to use abstraction layer on top of Hadoop MapReduce. Pig allows us to define complex data flows using its scripting language Pig-Latin. Pig-Latin is a procedural scripting language with a gradual learning curve and a lot of built-in functions and a fairly large open source community. A data flow, written in Pig-Latin, hides all of the low level complexities of MapReduce so that we can focus on data and avoid writing low level Java code. Developing complex data flows with Pig-Latin is easy using the built-in functions, but sometimes we need to implement our own functions that are specific to our data or that apply a specific business logic to the data. For these reasons Pig provides User Defined Functions (UDFs) that can be written in Java or Python and easily integrated with Pig-Latin. The Pig community has a public repository called [PiggyBank](https://github.com/apache/pig/tree/branch-0.12/contrib/piggybank) where you can find user contributed functions, you should always check this repository before writing your own UDF.
 
-Pig is best suited for doing ETL (Extract Transform Load) operations on raw data-sets. Other common Pig tasks include data cleaning and data exploration, data cleaning removes bad records from the data-set so that the next step in the data flow can operate on cleaned data-set. Cleaning a data-set with Pig depends on the data being cleaned, Pig-Latin provides numerous functions that can be used to clean the data. For example we can remove bad records from the data set by adding a filter in the data flow :
+Pig is best suited for doing ETL (Extract Transform Load) operations on raw data-sets. Other common Pig tasks include data cleaning and data exploration, data cleaning removes bad records from the data-set so that the next step in the data flow can operate on cleaned data-set. For example we can remove bad records from the data set by adding a filter in the data flow :
 
 ```bash
 A = LOAD '/user/hdfs/raw-data-set' USING PigStorage(',') AS (id:int, weight:int, age:int);
@@ -19,10 +18,10 @@ D = ...
 ```
 
 In the above example we're filtering records with negative age, once cleaned we can continue developing our data flow by adding more relations and/or implementing our specific data processing steps.
-Cleaning a data-set gets complicated when deciding whether a record is clean or not is not straight forward or difficult to do with the built-in functions. For these situations we can write our own filter function that can examine a record and decide if it's clean or not, these filter functions can also call other functions from our libraries that can execute complex processing.
+Cleaning a data-set gets complicated when deciding whether a record is clean or not is not straight forward or difficult to do with the built-in functions. For these situations we can write our own filter function that will examine each record and decide if it's clean or not, these filter functions can also call other functions from our libraries that can execute complex processing.
 
 ## Setup
-Filter UDFs are user defined functions that return a boolean, these functions are mostly used with FILTER expression to filter records. To implement a filter UDF in java we need to extend a class then override a method, this method is called fro every record in our data set and its return value (true or false) decides whether the record passes the filter or not.
+Filter UDFs are user defined functions that return a boolean, these functions are mostly used with FILTER expression to filter records. To implement a filter UDF in java we need to extend a class then override a method, this method is called for every record in our data set and its return value (true or false) decides whether the record passes the filter or not.
 
 To setup a quick development environment I'll use Eclipse with Gradle plugin, you can use Maven or Ant + Ivy even !
 Here's the dependencies section of my build.gradle file :
@@ -62,7 +61,7 @@ public class FilterA extends FilterFunc {
 }
 ```
 
-After extending the _FilterFunc_ we should override the _exec_ method. The _exec_ method takes a tuple as argument and should return _true_ or _false_. The logic inside _exec_ method depends on how you'll decide if a record is clean or not. A record in the data-set is a tuple with multiple fields so we'll have to use the _get_ method on the tuple to get the fields (columns) that we want to check. We must also cast the fields of the tuple before using them.
+After extending the _FilterFunc_ we should override the _exec_ method. The _exec_ method takes a tuple as argument and should return _true_ or _false_. The logic inside _exec_ method depends on how you'll decide if a record is clean or not. The _exec_ takes a variable number of raguments presented as a tuple, we simply use the get method of the Tuple to extract the arguments that we're going to use in our function. We must also cast the fields of the tuple before using them.
 
 ## Demonstration
 For the purpose of this demonstration we'll consider a simple data-set where each record is a line with multiple fields separated by ','. Suppose now that we'll decide if a record is clean or not by applying our Filter UDF to the fourth field of the record and returning _ture_ if the record is clean or _false_ otherwise.
@@ -83,7 +82,7 @@ public class FilterA extends FilterFunc {
 	@Override
 	public Boolean exec(Tuple input) throws IOException {
 		// cast the field we want to examine
-		field4 = (int) input.get(3);
+		field4 = (int) input.get(0);
 		// Implement your filtering logic here. I'm calling a custom filter that I prepared :
 		clean = ZetaFilter.filter((int) input.get(4));
 		// return true or false
@@ -93,7 +92,7 @@ public class FilterA extends FilterFunc {
 }
 ```
 
-The Filter UDF we'll examine the 4 field, after casting it to integer, by passing it to a special filter function (in my case a custom filter called ZetaFilter). You can do whatever you want inside the _exec_ method to decide if the record/field is clean or not.
+The Filter UDF will examine the 4 field, after casting it to integer, by passing it to a special filter function (in my case a custom filter called ZetaFilter). You can do whatever you want inside the _exec_ method to decide if the record/field is clean or not.
 
 Next I'll compile and package my Filter UDF in a jar (the details depend on your build tool), in gradle we just have to execute the gradle tasks _clean jar_. After compiling and packaging, we'll end up with a jar containing out Filter UDF. Next we'll register the jar in Pig-Latin and call it from there :
 
@@ -133,7 +132,7 @@ public class FilterA extends FilterFunc {
 	@Override
 	public Boolean exec(Tuple input) throws IOException {
 		// cast the field we want to examine
-		field4 = (int) input.get(3);
+		field4 = (int) input.get(0);
 		// Implement your filtering logic here. I'm calling a custom filter that I prepared. My function returns a boolean :
 		clean = ZetaFilter.filter((int) input.get(4));
 		// increment bad records counter each time we encounter a bad record
@@ -163,4 +162,5 @@ cleaned_data = FILTER data_sample by io.ushabti.FilterA($3);
 This way you don't have to apply your complex your Filter UDF on all of the data-set, and you can estimate the percentage of bad records in your data-set by using the counter and extrapolating to the entire data-set size.
 
 ## Fin
-Cleaning big-data-sets becomes easy with Pig and the ability to implement specific Filter UDFs make the task easier and more customizable.
+Cleaning big-data-sets becomes easy with Pig and the ability to implement specific Filter UDFs make the task easier and more customizable.  
+
