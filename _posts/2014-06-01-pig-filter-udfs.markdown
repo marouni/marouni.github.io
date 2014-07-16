@@ -1,4 +1,4 @@
-
+---
 layout: post
 title:  "Extending Apache Pig to clean Big Data sets"
 date:   2014-06-01 12:14:20
