@@ -1,0 +1,25 @@
+
+layout: post
+title:  "Processing Network captures with Hadoop"
+date:   2014-06-09 15:14:20
+categories: jekyll update
+---
+[https://github.com/marouni/pcap2seq] (https://github.com/marouni/pcap2seq)
+
+Processing network capture files is one of the several use cases of large scale processing in Hadoop using MapReduce. Network capture files record network activity by listening to interfaces and capturing network packets then storing the packet in a file. In a busy environment network edge nodes (routers, firewalls, Intrusion Detection Systems, ...) generate gigabytes of network capture files per day, these files are then moved into HDFS for processing. 
+
+## PCAP File Format
+PCAP (Packet CAPture) is the de-facto file format for storing network captures. PCAP is the standard file format for many widely used tools like tcpdump, wireshark, snort, etc. [A pcap file] (http://wiki.wireshark.org/Development/LibpcapFileFormat) consists of a file header followed by one or more packet headers describing the captured packet, each packet header is followed by the actual captured packet.
+
+One downside of processing pcap files in Hadoop is that these files are not splittable. A non splittable file is a file that cannot be processed by multiple Hadoop workers in the same time. This is due to the pcap file format where we don't have a sync marker that can be used by the Hadoop workers to synchronize between each other in order for each worker to process a split of the file. This limitation makes difficult or nearly impossible to develop an InputFileFormat (A class used by MapReduce to generate input splits from files) that can process files efficiently.
+
+## Hadoop Sequence File Format  
+[Hadoop sequence file format] (http://wiki.apache.org/hadoop/SequenceFile) is a format developed for Hadoop and used internally by Hadoop. A Hadoop sequence file consists of multiple key/value pairs with sync markers that allow a sequence file to be easily split between multiple Hadoop workers. In addition to being splittable, a sequence file can be compressed at the record or the block level which results in smaller files. The key/value pairs can be of any Hadoop supported serializable type including BytesWritable type which gives the possibility to store binary data in keys or values of a sequence file. The keys and values of a sequence file (compressed or not) along with some meta-data are serialized to disk by a sequence file writer thus creating a sequence file.
+
+## From PCAP to Hadoop Sequence
+PCAP files are the ideal candidate for conversion to sequence files. One reason is that, as mentioned earlier, is that pcap files are not splittable. Another reason is that pcap files have a rather simple format that resembles a series of keys/values with keys being packet headers and values being the actual packets.
+
+As an exercise I wrote a converter that takes pcap files and convert them to Hadoop sequence files. The converter stripes the pcap file header then scans the pcap spitting the packet's time stamp (from the packet header) as key in sequence file and the actual packet as value.
+
+## Code
+You can find the code on my github page : [https://github.com/marouni/pcap2seq] (https://github.com/marouni/pcap2seq) along with instructions on how to build and run the converter.
