@@ -1,0 +1,46 @@
+# Site wide configuration
+
+title:            Abbass Marouni Personal Blog
+locale:           en_US
+url:              http://blog.marouni.fr
+
+# Jekyll configuration
+
+permalink:   /:categories/:title/
+markdown:    kramdown
+highlighter: pygments
+sass:
+  sass_dir: _sass
+  style: compressed
+gems:
+  - jekyll-sitemap
+
+kramdown:
+  auto_ids: true
+  footnote_nr: 1
+  entity_output: as_char
+  toc_levels: 1..6
+  use_coderay: false
+
+
+# Site owner
+owner:
+  name: Abbass Marouni
+  avatar: bio-photo.jpg
+  bio: "What can I know?\nWhat should I do?\nWhat should I aspire to?"
+  email: abbass.marouni@gmail.com
+  disqus-shortname: marouni
+  twitter: AbbassMarouni
+  google:
+    plus: #username
+    analytics: 'UA-50476639-1'
+    tracking_id : 'UA-50476639-1'
+    verify: 
+    ad-client: 
+    ad-slot: 
+  github: marouni
+  stackoverflow: #http://stackoverflow.com/users/123456/username
+  linkedin: Abbass Marouni
+
+include: [".htaccess"]
+exclude: ["lib", "config.rb", "Capfile", "config", "log", "Rakefile", "Rakefile.rb", "tmp", "less", "*.sublime-project", "*.sublime-workspace", "test", "spec", "Gruntfile.js", "package.json", "node_modules", "Gemfile", "Gemfile.lock", "LICENSE", "README.md"]
