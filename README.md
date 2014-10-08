@@ -3,7 +3,7 @@ marouni.github.io
 
 http://marouni.github.io/
 
-This is the code for my personal blog. It uses Jekyll for creating static web pages that are hosted through Github.
+This is the code for my personal blog. It uses Jekyll and "Minimal Mistake" theme for creating static web pages that are hosted through Github.
 
 License
 =======
