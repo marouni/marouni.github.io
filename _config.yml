@@ -1,6 +1,6 @@
 # Site wide configuration
 
-title:            Abbass Marouni Personal Blog
+title:            Abbass Marouni
 locale:           en_US
 url:              http://blog.marouni.fr
 
@@ -26,7 +26,7 @@ kramdown:
 # Site owner
 owner:
   name: Abbass Marouni
-  avatar: bio-photo.jpg
+  avatar: bio-photo-3.jpg
   bio: "What can I know?\nWhat should I do?\nWhat should I aspire to?"
   email: abbass.marouni@gmail.com
   disqus-shortname: marouni
