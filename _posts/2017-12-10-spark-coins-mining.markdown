@@ -1,15 +1,18 @@
 ---
 layout: post
 title:  "Mining crypto currencies with Apache Spark"
-date:   2017-12-30 19:44:30
+date:   2017-12-10 19:44:30
 comments: true
-categories: jekyll update
+categories: hadoop hdfs apache spark
+excerpt_separator: <!--more-->
 ---
 
 ![](http://dogecoin.com/imgs/dogecoin-300.png "Dogecoin") ![](https://spark.apache.org/images/spark-logo-trademark.png "Apache Spark")
 
 ## Crypto currencies
 Crypto currencies are gaining more and more momentum, and the last Bitcoin surge (17/12/2017) where the exchange price almost hit the 20000$ mark [1] is just another evidence of this momentum.
+
+<!--more-->
 
 Developers and users alike are riding the crypto currency wave with Bitcoin adoption soaring as evidenced by the number of unique address transactions [2].
 

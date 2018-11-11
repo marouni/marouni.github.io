@@ -3,8 +3,7 @@
 title:            Abbass Marouni
 locale:           en_US
 url:              https://blog.marouni.fr
-
-# Jekyll configuration
+remote_theme:     "mmistakes/minimal-mistakes"
 
 permalink:   /:categories/:title/
 markdown:    kramdown
@@ -12,7 +11,7 @@ highlighter: rouge
 sass:
   sass_dir: _sass
   style: compressed
-gems:
+plugins:
   - jekyll-sitemap
 
 kramdown:
@@ -20,7 +19,21 @@ kramdown:
   footnote_nr: 1
   entity_output: as_char
   toc_levels: 1..6
-  use_coderay: false
+  enable_coderay: false
+
+# Layout
+defaults:
+  # _posts
+  - scope:
+      path: ""
+      type: posts
+    values:
+      layout: single
+      author_profile: true
+      read_time: true
+      comments: true
+      share: true
+      related: true
 
 
 # Site owner

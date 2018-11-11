@@ -3,7 +3,7 @@ layout: post
 title:  "Dymestifying Apache Hive indexes"
 date:   2014-04-27 12:14:20
 comments: true
-categories: jekyll update
+categories: hadoop hdfs apache hive
 ---
 
 

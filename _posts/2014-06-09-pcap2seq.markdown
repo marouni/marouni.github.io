@@ -3,7 +3,7 @@ layout: post
 title:  "Processing PCAP files with Hadoop"
 date:   2014-06-09 15:14:20
 comments: true
-categories: jekyll update
+categories: hadoop hdfs apache mapreduce
 ---
 
 Processing network capture files is one of the several use cases of large scale processing in Hadoop using MapReduce. Network capture files record network activity by listening to interfaces and capturing network packets then storing the packet in a file. In a busy environment network edge nodes (routers, firewalls, Intrusion Detection Systems, ...) generate gigabytes of network capture files per day, these files are then moved into HDFS for processing. 

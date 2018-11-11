@@ -3,7 +3,7 @@ layout: post
 title:  "HDFS heterogeneous storage"
 date:   2014-04-19 19:10:29
 comments: true
-categories: jekyll update
+categories: hadoop hdfs apache
 ---
 
 Hadoop 2.4.0 was [released](http://hadoop.apache.org/docs/r2.4.0/hadoop-project-dist/hadoop-common/releasenotes.html) last week and with it came the first part of the HDFS heterogeneous storage support.
