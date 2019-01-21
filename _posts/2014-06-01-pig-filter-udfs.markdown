@@ -3,7 +3,7 @@ layout: post
 title:  "Extending Apache Pig to filter your Big Data"
 date:   2014-06-01 12:14:20
 comments: true
-categories: hadoop hdfs apache pig
+# categories: hadoop hdfs apache pig
 ---
 
 [Apache Pig](http://pig.apache.org/) provides a simple to use abstraction layer on top of Hadoop MapReduce. Pig allows us to define complex data flows using its scripting language Pig-Latin. Pig-Latin is a procedural scripting language with a gradual learning curve and a lot of built-in functions and a fairly large open source community. 

@@ -3,7 +3,7 @@ layout: post
 title:  "Contributing to OpenStack Sahara Project"
 date:   2014-11-09 18:44:28
 comments: true
-categories: hadoop hdfs apache openstack
+# categories: hadoop hdfs apache openstack
 ---
 
 We've been using OpenStack for a while and so recently we decided to contribute back some of our work to the OpenStack Sahara project. OpenStack Sahara aims to make it easy to do data processing on OpenStack, the project currently supports spawning Hadoop clusters and running data processing jobs on data in the OpenStack Object Store (OpenStack Switf).

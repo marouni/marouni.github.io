@@ -3,7 +3,7 @@ layout: post
 title:  "Mining crypto currencies with Apache Spark"
 date:   2017-12-10 19:44:30
 comments: true
-categories: hadoop hdfs apache spark
+# categories: hadoop hdfs apache spark
 excerpt_separator: <!--more-->
 ---
 
