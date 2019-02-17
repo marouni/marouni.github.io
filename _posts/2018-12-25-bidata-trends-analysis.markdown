@@ -14,7 +14,7 @@ For this year's holidays side project I decided to analyze [Data Eng's archives]
 <br/>
 So I crawled and cleaned over 290 weekly issues (well python did !), I kept articles' snippets from the technical, news and releases sections only. Next, I ran some basic natural language processing followed by some basic filtering to produce keywords mentions and all of the plots that follow.  
 ## Major trends over the last seven years
-Let's start with the major trends over the last seven years, here I'm plotting the monthly rolling mean of the number of mentions of specific keywords and plotting them together on the same graph. The following plots illustrate at what approximate time frames technologies become more popular (as a result of more reporting about these technologies) when compared together.
+Let's start with the major trends over the last seven years, here I'm calculating the monthly rolling mean of the number of mentions of specific keywords and plotting them together on the same graph. The following plots illustrate at what approximate time frames technologies become more popular (as a result of more reporting about these technologies) when compared together.
 
 ### Hadoop vs. Spark
 {% include plots/hadoop_spark_13_19.html %}
@@ -29,7 +29,7 @@ Let's start with the major trends over the last seven years, here I'm plotting t
 ### Hadoop vs. Kubernetes
 {% include plots/hadoop_k8s_13_19.html %}
 <br/>
-**Observations** : An interesting observation is the rise of Kubernestes, even though the Data Eng Weekly is not a Devops news letters, is a witness to the overall hype around Kubernetes in all domains starting from beginning of 2017.
+**Observations** : An interesting observation is the rise of Kubernestes, even though the Data Eng Weekly is not a Devops newsletter, is a witness to the overall hype around Kubernetes in all domains starting from beginning of 2017.
 
 ## Yearly top keywords
 Here I'm simply plotting the top 10 keywords by total number of mentions in a give year.
@@ -71,3 +71,6 @@ Here I'm simply plotting the top 10 keywords by total number of mentions in a gi
 
 ## Code and dataset
 I'm working on cleaning up the code so that you can generate the dataset by yourself. I'll also be posting the NLP python snippets along with Bokeh & Seaborn plot generating snippets, so stay tuned.
+
+## Update 17/02/2019
+*The blog post got translated to chinese by Zhenwen Xu, so if you're more comfortable with chinese you can read it here : [http://helight.info/2019-02-13/1187](http://helight.info/2019-02-13/1187)*
