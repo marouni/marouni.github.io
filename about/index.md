@@ -8,6 +8,6 @@ image:
   credit: Abbass Marouni
 ---
 
-I'm a software engineer currently residing in Paris/France and this is my personal blog. I often write my own analysis and experiments with new technologies and ideas in **Distributed Systems**, **Big Data**, **Hadoop** and **Software** in general.
+I'm an engineering leader and engineer currently residing in Paris/France and this is my personal blog. I often write my own analysis and experiments with new technologies and ideas in **Engineering Management**, **Distributed Systems**, **Big Data**, **Hadoop** and **Software** in general.
 <br><br>
-I'm also a humble medival history buff and an avid traveller with a constant urge to discover new places. The photos featured on this site were taken during a trip to Cinque Terre in Italy, a great place if you ask me !
+I'm also a humble medieval history buff and an avid traveller with a constant urge to discover new places. The photos featured on this site were taken during a trip to Cinque Terre in Italy, a great place if you ask me !
