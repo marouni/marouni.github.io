@@ -1,0 +1,58 @@
+---
+layout: post
+title:  "FinSummarizer: AI-Powered Financial News Summarization and Market Impact Analysis"
+date:   2024-01-16 18:41:11
+comments: true
+---
+
+<br/>
+Navigating the fast-paced world of global financial markets demands more than just keeping up—it requires insight. The sheer volume of information from financial news sources can be overwhelming. What if there was a way to not just sort through the noise but distill key insights.
+
+![TEBOT](/images/posts/tebot/tebot_sc.png){:style="display:block; margin-left:auto; margin-right:auto; width:auto; height: 500px;"}
+<center>Try <a target="_blank" rel="noopener noreferrer" href="https://marouni.fr/tebot"><ins>FinSummarizer !</ins></a></center>
+
+## <a target="_blank" rel="noopener noreferrer" href="https://marouni.fr/tebot"><ins>FinSummarizer</ins></a>
+We introduce a fun little project [FinSummarizer](https://marouni.fr/tebot) that blends technology with financial news, allowing for a simple data interpretation and decision-making to make sense of the chaos inherit in the financial markets.
+<br/>
+<br/>
+Here's a quick peek behind the scenes to understand how FinSummarizer transforms raw financial data into actionable insights:
+
+#### 1. Data Dive:
+FinSummarizer scours the vast landscape of financial news on [tradingeconomics.com](https://tradingeconomics.com), cherry-picking the most relevant articles.
+
+#### 2. ChatGPT API Magic:
+FinSummarizer taps into the ChatGPT API to craft concise and informative summaries.
+
+#### 3. The Ratings Game:
+Going beyond mere summarization, FinSummarizer employs the ChatGPT API to rate news articles based on their potential impact on global financial markets.
+
+## From Data to Information: FinSummarizer Examples
+Now that we've unveiled the mechanics, here's a couple of _important_ news snippets from tradingeconomics.com and their respective summaries :
+<br/>
+<br/>
+
+News             |  FinSummarizer
+:-------------------------:|:-------------------------:
+![TE Snippets](/images/posts/tebot/te_articles.png){:style="display:block; margin-left:auto; margin-right:auto; width:750px; height: auto;"}  |  ![TEBOT RESULTS](/images/posts/tebot/tebot_results.png){:style="display:block; margin-left:auto; margin-right:auto; width:750px; height: auto;"}
+
+FinSummarizer goes beyond mere summarization – it translates news articles into a visual language that's easy to decipher.
+<br/>
+<br/>
+![TEBOT METADATA](/images/posts/tebot/news_metadata.png){:style="display:block; margin-left:auto; margin-right:auto; width:750px; height: auto;"}
+
+#### Color-Coded Summaries:
+FinSummarizer introduces a visual spectrum to your financial news experience. A green hue signifies positive impacts on global financial markets, while a red tone indicates a potential negative influence. This color-coded approach lets you quickly gauge the overall sentiment, helping you navigate the complexities of the market landscape at a glance.
+
+#### Star Ratings for Importance:
+But there's more to the story. FinSummarizer goes the extra mile by assigning star ratings (ranging from 1 to 3 stars) to each news piece. These ratings serve as a quick guide to the news's importance, allowing you to prioritize your attention. It's like having a personal rating system that highlights the stories that truly matter in the financial world.
+
+#### Demystifying Scores:
+Wondering why a particular news piece got a certain color code or star rating? FinSummarizer doesn't leave you in the dark. It provides clear and concise explanations for the attributed color code and impact scores. Now, you not only know the what but also the why, empowering you with a deeper understanding of the financial landscape.
+<br/>
+<br/>
+
+## FinSummarizer's Evolution
+FinSummarizer currently uses ChatGPT 3.5, as the cost per token evolves, a next step would be to test newer models and new providers (Google, ...).
+
+<br/>
+:robot: : _Some parts of this blogpost were generated with OpenAI ChatGPT !_
